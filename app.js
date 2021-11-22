@@ -11,6 +11,9 @@ let enable = false;
 let a = 1;
 let b;
 
+// Checks if the touch is used
+isTouch = !!("ontouchstart" in window || navigator.msMaxTouchPoints);
+
 for (let i = 0; i < box.length; i++) {
     box[i].addEventListener('mouseup', function (e) {
 
@@ -27,29 +30,48 @@ for (let i = 0; i < box.length; i++) {
         // right or left click, player turn & 1 or 2 players
         function chooseRgtLft() {
             if (enable === false) {
-            switch (e.button){
-                case 0:
-                    if (choice.selectedIndex === 1) {
-                        playerTurn.innerText = "Tour du joueur O (clic droit pour faire jouer l'ordi)";
-                    } else {
-                        playerTurn.innerText = "Tour du joueur O";
-                    }
+                if (isTouch) {
                     if (a % 2 === 1 && box[i].innerHTML !== 'X' && box[i].innerHTML !== 'O') {
                         left();
                         a++;
-                    }
-                    break;
-                case 2:
+                    } else {
                         if (choice.selectedIndex === 1) {
                             pc();
                             playerTurn.innerText = "Tour du joueur X";
-                        } else if (a % 2 === 0 && box[i].innerHTML !== 'X' && box[i].innerHTML !== 'O') {
-                            right();
-                            playerTurn.innerText = "Tour du joueur X";
+                            a++;
                         }
-                        a++;
-                    break;
-            }
+                        if (a % 2 === 0 && box[i].innerHTML !== 'X' && box[i].innerHTML !== 'O'){
+                            right();
+                            a++;
+                        }
+                    }
+                }
+                else {
+                    switch (e.button){
+                        case 0:
+                            if (choice.selectedIndex === 1) {
+                                playerTurn.innerText = "Tour du joueur O (clic droit pour faire jouer l'ordi)";
+                            } else {
+                                playerTurn.innerText = "Tour du joueur O";
+                            }
+                            if (a % 2 === 1 && box[i].innerHTML !== 'X' && box[i].innerHTML !== 'O') {
+                                left();
+                                a++;
+                            }
+                            break;
+                        case 2:
+                            if (choice.selectedIndex === 1) {
+                                pc();
+                                playerTurn.innerText = "Tour du joueur X";
+                                a++;
+                            } else if (a % 2 === 0 && box[i].innerHTML !== 'X' && box[i].innerHTML !== 'O') {
+                                right();
+                                playerTurn.innerText = "Tour du joueur X";
+                                a++;
+                            }
+                            break;
+                    }
+                }
             }
         }
 
@@ -57,7 +79,6 @@ for (let i = 0; i < box.length; i++) {
         winCondition();
     });
 }
-
 
 // test if someone won
 function winCondition() {
@@ -141,7 +162,7 @@ function win() {
     }
 }
 
-//reset the game
+// reset the game
 function resetGame() {
     for (let i = 0; i < box.length; i++) {
             box[i].innerHTML = '';
@@ -154,7 +175,7 @@ function resetGame() {
     resetButton.style.display = 'none';
 }
 
-//player vs computer
+// player vs computer
 function pc () {
     let boxToPlay = Math.floor(Math.random()*8)
     if (box[boxToPlay].innerHTML === "") {
