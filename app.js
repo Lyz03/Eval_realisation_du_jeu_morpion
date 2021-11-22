@@ -1,44 +1,53 @@
+// disable the context menu
 document.getElementById('play_set').addEventListener('contextmenu', function (event){
     event.preventDefault();
 });
 
 let box = document.querySelectorAll('section button');
-let a = 1;
 let playerTurn = document.getElementById('player_turn');
-let b;
 let resetButton = document.getElementById('reset');
-let enable = true;
+let choice = document.getElementById("one_or_two_players");
+let enable = false;
+let a = 1;
+let b;
 
 for (let i = 0; i < box.length; i++) {
     box[i].addEventListener('mouseup', function (e) {
 
         // draw X
-        function left(x) {
-            box[i].innerHTML = x;
+        function left() {
+            box[i].innerHTML = 'X';
         }
 
         //draw O
-        function right(o) {
-            box[i].innerHTML = o;
+        function right() {
+            box[i].innerHTML = 'O';
         }
 
-        // right or left click, player turn
+        // right or left click, player turn & 1 or 2 players
         function chooseRgtLft() {
-            if (enable === true) {
+            if (enable === false) {
             switch (e.button){
                 case 0:
-                    if (a % 2 === 1 && box[i].innerHTML !== 'X' && box[i].innerHTML !== 'O') {
-                        left('X');
+                    if (choice.selectedIndex === 1) {
+                        playerTurn.innerText = "Tour du joueur O (clic droit pour faire jouer l'ordi)";
+                    } else {
                         playerTurn.innerText = "Tour du joueur O";
+                    }
+                    if (a % 2 === 1 && box[i].innerHTML !== 'X' && box[i].innerHTML !== 'O') {
+                        left();
                         a++;
                     }
                     break;
                 case 2:
-                    if (a % 2 === 0 && box[i].innerHTML !== 'X' && box[i].innerHTML !== 'O') {
-                        right('O');
-                        playerTurn.innerText = "Tour du joueur X";
+                        if (choice.selectedIndex === 1) {
+                            pc();
+                            playerTurn.innerText = "Tour du joueur X";
+                        } else if (a % 2 === 0 && box[i].innerHTML !== 'X' && box[i].innerHTML !== 'O') {
+                            right();
+                            playerTurn.innerText = "Tour du joueur X";
+                        }
                         a++;
-                    }
                     break;
             }
             }
@@ -122,13 +131,13 @@ function win() {
         playerTurn.style.fontSize = '1.5rem';
         resetButton.style.display = 'block';
         resetButton.addEventListener("click", resetGame);
-        enable = false;
+        enable = true;
     } else if (b === 'O') {
         playerTurn.innerText = 'Joueur O à gagné !'
         playerTurn.style.fontSize = '1.5rem';
         resetButton.style.display = 'block';
         resetButton.addEventListener("click", resetGame);
-        enable = false;
+        enable = true;
     }
 }
 
@@ -138,12 +147,21 @@ function resetGame() {
             box[i].innerHTML = '';
     }
     a = 1;
-    enable = true;
+    enable = false;
     playerTurn.style.fontSize = '1rem';
     playerTurn.innerText = 'Vous pouvez commencer, le joueur X avec le clic gauche et le joueur O avec le clic droit'
     +'\n'+ 'Le joueur X commence';
     resetButton.style.display = 'none';
 }
 
-
+//player vs computer
+function pc () {
+    let boxToPlay = Math.floor(Math.random()*8)
+    if (box[boxToPlay].innerHTML === "") {
+        box[boxToPlay].innerHTML = "0"
+    }
+    else if (box[boxToPlay].innerHTML !== "") {
+        pc();
+    }
+}
 

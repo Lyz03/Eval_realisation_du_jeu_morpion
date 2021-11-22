@@ -32,24 +32,10 @@ section button:hover {
     color: #9d9d9d;
 }
 
-/*
-#start {
-    border: none;
-    color: #fdeaf1;
-    background-color: #c98a92;
-    padding: 0.5rem;
-    font-size: 1.2rem;
-}
-
-#start:hover {
-    color: #e3e3e3;
-    background-color: #a8727a;
-}
- */
-
 #reset {
     display: none;
     border: none;
+    border-radius: 5px;
     color: #fdeaf1;
     background-color: #c98a92;
     padding: 0.5rem;
@@ -59,4 +45,11 @@ section button:hover {
 #reset:hover {
     color: #e3e3e3;
     background-color: #a8727a;
+}
+
+#one_or_two_players {
+    padding: 0.5rem;
+    font-size: 1.1rem;
+    color: #9d9d9d;
+    border-radius: 5px;
 }
