@@ -6,39 +6,41 @@ let box = document.querySelectorAll('section button');
 let a = 1;
 let playerTurn = document.getElementById('player_turn');
 let b;
-
-console.log(box);
+let resetButton = document.getElementById('reset');
+let enable = true;
 
 for (let i = 0; i < box.length; i++) {
     box[i].addEventListener('mouseup', function (e) {
 
         // draw X
-        function left() {
-            box[i].innerHTML = 'X';
+        function left(x) {
+            box[i].innerHTML = x;
         }
 
         //draw O
-        function right() {
-            box[i].innerHTML = 'O';
+        function right(o) {
+            box[i].innerHTML = o;
         }
 
         // right or left click, player turn
         function chooseRgtLft() {
+            if (enable === true) {
             switch (e.button){
                 case 0:
                     if (a % 2 === 1 && box[i].innerHTML !== 'X' && box[i].innerHTML !== 'O') {
-                        left();
+                        left('X');
                         playerTurn.innerText = "Tour du joueur O";
                         a++;
                     }
                     break;
                 case 2:
                     if (a % 2 === 0 && box[i].innerHTML !== 'X' && box[i].innerHTML !== 'O') {
-                        right();
+                        right('O');
                         playerTurn.innerText = "Tour du joueur X";
                         a++;
                     }
                     break;
+            }
             }
         }
 
@@ -46,6 +48,7 @@ for (let i = 0; i < box.length; i++) {
         winCondition();
     });
 }
+
 
 // test if someone won
 function winCondition() {
@@ -83,16 +86,32 @@ function winCondition() {
        win();
    }
 
-   // diagonal up left, down right
+   // diagonal top left, bottom right
    else if (box[0].innerHTML === box[4].innerHTML && box[4].innerHTML=== box[8].innerHTML) {
        b = box[0].innerHTML;
        win();
    }
 
-   // diagonal up right, down left
+   // diagonal top right, bottom left
    else if (box[2].innerHTML === box[4].innerHTML && box[4].innerHTML=== box[6].innerHTML) {
        b = box[2].innerHTML;
        win();
+   }
+
+   // both players loose
+    else {
+        let c = 0;
+        for (let i = 0; i <box.length; i++){
+            if (box[i].innerHTML === 'X' || box[i].innerHTML === 'O') {
+                c++;
+            }
+        }
+        if (c === 9) {
+            playerTurn.innerText = 'Match nul !';
+            playerTurn.style.fontSize = '1.5rem';
+            resetButton.style.display = 'block';
+            resetButton.addEventListener("click", resetGame);
+        }
    }
 }
 
@@ -101,9 +120,30 @@ function win() {
     if (b === 'X') {
         playerTurn.innerText = 'Joueur X à gagné !'
         playerTurn.style.fontSize = '1.5rem';
+        resetButton.style.display = 'block';
+        resetButton.addEventListener("click", resetGame);
+        enable = false;
     } else if (b === 'O') {
         playerTurn.innerText = 'Joueur O à gagné !'
         playerTurn.style.fontSize = '1.5rem';
+        resetButton.style.display = 'block';
+        resetButton.addEventListener("click", resetGame);
+        enable = false;
     }
 }
+
+//reset the game
+function resetGame() {
+    for (let i = 0; i < box.length; i++) {
+            box[i].innerHTML = '';
+    }
+    a = 1;
+    enable = true;
+    playerTurn.style.fontSize = '1rem';
+    playerTurn.innerText = 'Vous pouvez commencer, le joueur X avec le clic gauche et le joueur O avec le clic droit'
+    +'\n'+ 'Le joueur X commence';
+    resetButton.style.display = 'none';
+}
+
+
 
