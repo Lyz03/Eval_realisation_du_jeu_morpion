@@ -17,22 +17,13 @@ isTouch = !!("ontouchstart" in window || navigator.msMaxTouchPoints);
 for (let i = 0; i < box.length; i++) {
     box[i].addEventListener('mouseup', function (e) {
 
-        // draw X
-        function left() {
-            box[i].innerHTML = 'X';
-        }
-
-        //draw O
-        function right() {
-            box[i].innerHTML = 'O';
-        }
 
         // right or left click, player turn & 1 or 2 players
         function chooseRgtLft() {
             if (enable === false) {
                 if (isTouch) {
                     if (a % 2 === 1 && box[i].innerHTML !== 'X' && box[i].innerHTML !== 'O') {
-                        left();
+                        left(i);
                         a++;
                     } else {
                         if (choice.selectedIndex === 1) {
@@ -41,7 +32,7 @@ for (let i = 0; i < box.length; i++) {
                             a++;
                         }
                         if (a % 2 === 0 && box[i].innerHTML !== 'X' && box[i].innerHTML !== 'O'){
-                            right();
+                            right(i);
                             a++;
                         }
                     }
@@ -55,7 +46,7 @@ for (let i = 0; i < box.length; i++) {
                                 playerTurn.innerText = "Tour du joueur O";
                             }
                             if (a % 2 === 1 && box[i].innerHTML !== 'X' && box[i].innerHTML !== 'O') {
-                                left();
+                                left(i);
                                 a++;
                             }
                             break;
@@ -65,7 +56,7 @@ for (let i = 0; i < box.length; i++) {
                                 playerTurn.innerText = "Tour du joueur X";
                                 a++;
                             } else if (a % 2 === 0 && box[i].innerHTML !== 'X' && box[i].innerHTML !== 'O') {
-                                right();
+                                right(i);
                                 playerTurn.innerText = "Tour du joueur X";
                                 a++;
                             }
@@ -78,6 +69,16 @@ for (let i = 0; i < box.length; i++) {
         chooseRgtLft();
         winCondition();
     });
+}
+
+// draw X
+function left(index) {
+    box[index].innerHTML = 'X';
+}
+
+//draw O
+function right(index) {
+    box[index].innerHTML = 'O';
 }
 
 // test if someone won
